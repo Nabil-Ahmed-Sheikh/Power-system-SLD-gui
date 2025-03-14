@@ -1,6 +1,6 @@
-from PyQt6.QtWidgets import QApplication, QGraphicsView, QGraphicsScene, QGraphicsItem, QGraphicsLineItem, QGraphicsEllipseItem, QGraphicsTextItem, QInputDialog, QGraphicsPolygonItem, QGraphicsRectItem
-from PyQt6.QtGui import QPen, QBrush, QPainter, QPainterPath, QPolygonF, QTransform 
-from PyQt6.QtCore import Qt, QPointF, QLineF
+from PyQt6.QtWidgets import QGraphicsItem, QGraphicsTextItem, QInputDialog, QGraphicsRectItem
+from PyQt6.QtGui import QPen, QBrush
+from PyQt6.QtCore import Qt
 
 class Load(QGraphicsRectItem):
     def __init__(self, x, y, load_value=0.0, name="Load"):

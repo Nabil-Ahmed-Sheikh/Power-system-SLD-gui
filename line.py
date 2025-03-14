@@ -1,28 +1,34 @@
-from PyQt6.QtWidgets import QApplication, QGraphicsView, QGraphicsScene, QGraphicsItem, QGraphicsLineItem, QGraphicsEllipseItem, QGraphicsTextItem, QInputDialog, QGraphicsPolygonItem, QGraphicsRectItem
-from PyQt6.QtGui import QPen, QBrush, QPainter, QPainterPath, QPolygonF, QTransform 
+from PyQt6.QtWidgets import QGraphicsLineItem, QInputDialog, QGraphicsPolygonItem, QGraphicsTextItem
+from PyQt6.QtGui import QPen, QBrush, QPolygonF, QTransform 
 from PyQt6.QtCore import Qt, QPointF, QLineF
 
 class Line(QGraphicsLineItem):
-    def __init__(self, bus1, bus2, impedance=0.1, is_directed=False):
+    def __init__(self, name, item1, item2, impedance=0.1, is_directed=False):
         super().__init__()
         self.setPen(QPen(Qt.GlobalColor.black, 2))
+        self.setFlags(QGraphicsLineItem.GraphicsItemFlag.ItemIsSelectable)
         self.setZValue(-1)
-        self.bus1 = bus1
-        self.bus2 = bus2
+        self.name = name
+        self.item1 = item1
+        self.item2 = item2
         self.impedance = impedance
         self.is_directed = is_directed
         self.arrow_item = None  # To hold the arrow item
+        self.text.setDefaultTextColor(Qt.GlobalColor.white)
+        self.text = QGraphicsTextItem(self.name, self)
+        self.text.setPos((item1.scenePos().x() + item2.scenePos().x()) / 2, (item1.scenePos().y() + item2.scenePos().y()) / 2)
 
         # Link the line to both buses
-        bus1.lines.append(self)
-        bus2.lines.append(self)
+        
+        item1.lines.append(self)
+        item2.lines.append(self)
         self.updatePosition()
 
     def updatePosition(self):
         """ Adjust line position based on bus positions and update arrowhead direction """
         # Update the line between the two buses
-        self.setLine(self.bus1.scenePos().x(), self.bus1.scenePos().y(), 
-                     self.bus2.scenePos().x(), self.bus2.scenePos().y())
+        self.setLine(self.item1.scenePos().x(), self.item1.scenePos().y(), 
+                     self.item2.scenePos().x(), self.item2.scenePos().y())
 
         # If the line is directed, update the arrow
         if self.is_directed:
@@ -55,7 +61,7 @@ class Line(QGraphicsLineItem):
 
         # Calculate the position for the arrow (closer to p2)
         # Use a ratio t (0 <= t <= 1) to control how far from p1 the arrow will be
-        t = 0.9  # 92% of the way from p1 to p2 (closer to p2 but not at p2)
+        t = 0.9  # 90% of the way from p1 to p2 (closer to p2 but not at p2)
         arrow_pos = line_f.pointAt(t)  # Get the point on the line at ratio t
 
         # Position the arrow at the end of the line
@@ -65,6 +71,7 @@ class Line(QGraphicsLineItem):
         self.arrow_item = QGraphicsPolygonItem(arrow, self)
         self.arrow_item.setBrush(QBrush(Qt.GlobalColor.red))  # Set arrow color
         self.arrow_item.setZValue(1)  # Ensure the arrow is above the line
+
 
     def mouseDoubleClickEvent(self, event):
         value, ok = QInputDialog.getDouble(None, "Edit Impedance", 

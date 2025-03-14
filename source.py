@@ -24,6 +24,7 @@ class Source(QGraphicsEllipseItem):
         value, ok = QInputDialog.getDouble(None, "Edit Voltage", 
                                            f"Enter Voltage (p.u.) for {self.name}:",
                                            self.voltage, 0, 10, 2)
+        
         if ok:
             self.voltage = value
             # Update the text display to reflect the new voltage value
