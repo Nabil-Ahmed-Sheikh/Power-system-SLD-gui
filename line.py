@@ -14,9 +14,7 @@ class Line(QGraphicsLineItem):
         self.impedance = impedance
         self.is_directed = is_directed
         self.arrow_item = None  # To hold the arrow item
-        self.text.setDefaultTextColor(Qt.GlobalColor.white)
-        self.text = QGraphicsTextItem(self.name, self)
-        self.text.setPos((item1.scenePos().x() + item2.scenePos().x()) / 2, (item1.scenePos().y() + item2.scenePos().y()) / 2)
+
 
         # Link the line to both buses
         
