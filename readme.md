@@ -17,7 +17,7 @@ To get started with this project, you need to have Python 3.6 or higher installe
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/yourusername/power-system-visualization.git
+    git clone https://github.com/Nabil-Ahmed-Sheikh/power-system-visualization.git
     cd power-system-visualization
     ```
 
